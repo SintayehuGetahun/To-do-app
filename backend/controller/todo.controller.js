@@ -23,14 +23,18 @@ ToDoService.getUserToDoList(userId);
         next(error); 
     } 
 } 
- 
-exports.deleteToDo =  async (req,res,next)=>{ 
-    try { 
-        const { id } = req.body; 
-        let deletedData = await ToDoService.deleteToDo(id); 
-        res.json({status: true,success:deletedData}); 
-    } catch (error) { 
-        console.log(error, 'err---->'); 
-        next(error); 
-    } 
-}
+exports.deleteToDo = async (req, res, next) => {
+    try {
+      const { id } = req.body;
+      const deletedData = await ToDoService.deleteToDo(id);
+  
+      if (deletedData) {
+        res.json({ status: true, success: deletedData });
+      } else {
+        res.json({ status: false, message: 'Todo not found' });
+      }
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  };

@@ -110,49 +110,51 @@ class _DashboardState extends State<Dashboard> {
               ], 
             ), 
           ), 
-          Expanded( 
-            child: Container( 
-              decoration: BoxDecoration( 
-                  color: Colors.white, 
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)) 
-              ), 
-              child: Padding( 
-                padding: const EdgeInsets.all(8.0), 
-                child: items == null ? null : ListView.builder( 
-                    itemCount: items!.length, 
-                    itemBuilder: (context, int index){ 
-                      return Slidable( 
-                        key: const ValueKey(0), 
-                        endActionPane: ActionPane( 
-                          motion: const ScrollMotion(), 
-                          dismissible: DismissiblePane(onDismissed: () {}), 
-                          children: [ 
-                            SlidableAction( 
-                              backgroundColor: Color(0xFFFE4A49), 
-                              foregroundColor: Colors.white, 
-                              icon: Icons.delete, 
-                              label: 'Delete', 
-                              onPressed: (BuildContext context) { 
-                                deleteItem('${items![index]['_id']}'); 
-                              }, 
-                            ), 
-                          ], 
-                        ), 
-                        child: Card( 
-                          borderOnForeground: false, 
-                          child: ListTile( 
-                            leading: Icon(Icons.task), 
-                            title: Text('${items![index]['title']}'), 
-                            subtitle: Text('${items![index]['desc']}'), 
-                            trailing: Icon(Icons.arrow_back), 
-                          ), 
-                        ), 
-                      ); 
-                    } 
-                ), 
-              ), 
-            ), 
-          ) 
+Expanded(
+  child: Container(
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+    ),
+    child: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: items == null
+          ? Center(child: CircularProgressIndicator())
+          : items!.isEmpty
+              ? Center(child: Text("No Tasks Found"))
+              : ListView.builder(
+                  itemCount: items!.length,
+                  itemBuilder: (context, int index) {
+                    return Slidable(
+                      key: ValueKey(items![index]['_id']),
+                      endActionPane: ActionPane(
+                        motion: ScrollMotion(),
+                        children: [
+                          SlidableAction(
+                            backgroundColor: Color(0xFFFE4A49),
+                            foregroundColor: Colors.white,
+                            icon: Icons.delete,
+                            label: 'Delete',
+                            onPressed: (BuildContext context) {
+                              deleteItem('${items![index]['_id']}');
+                            },
+                          ),
+                        ],
+                      ),
+                      child: Card(
+                        child: ListTile(
+                          leading: Icon(Icons.task),
+                          title: Text('${items![index]['title']}'),
+                          subtitle: Text('${items![index]['desc']}'),
+                          trailing: Icon(Icons.arrow_forward_ios),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+    ),
+  ),
+)
         ], 
       ), 
       floatingActionButton: FloatingActionButton( 
